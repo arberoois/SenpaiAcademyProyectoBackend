@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-const profesoresRouter = require("./routes/profesores");
-const authRouter = require("./routes/auth");
+const profesoresRouter = require("./src/routes/profesores");
+const authRouter = require("./src/routes/auth");
 
 const app = express();
 const PORT = 3000;

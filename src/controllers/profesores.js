@@ -1,6 +1,41 @@
-const express = require("express");
+const uuid = require("short-uuid");
 
-const router = express.Router();
+const obtener = async (req, res, next) => {
+  try {
+    res.status(200).send(profesores);
+  } catch (error) {
+    return next(error);
+  }
+};
+const crear = async (req, res, next) => {
+  try {
+    if (
+      req.body.name &&
+      req.body.rol &&
+      req.body.sexo &&
+      req.body.descripcion
+    ) {
+      const profesor = {
+        id: uuid.generate(),
+        nombre: req.body.name,
+        rol: req.body.rol,
+        sexo: req.body.sexo,
+        descripcion: req.body.descripcion,
+        imagen: "images/random.png",
+      };
+      console.log(profesor);
+      profesores.push(profesor);
+      res.status(201).send({ code: 201, profesor });
+    } else {
+      return res.status(400).json({
+        code: 400,
+        message: "Faltan datos (requeridos: nombre, rol, sexo, descripcion)",
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
 
 let profesores = [
   {
@@ -74,22 +109,4 @@ let profesores = [
   },
 ];
 
-router.get("/obtener", (req, res) => {
-  try {
-    res.status(200).send(profesores);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-router.post("/agregar", (req, res) => {
-  try {
-    const profesor = req.body;
-    profesores.push(profesor);
-    res.status(200).send(profesores);
-  } catch (error) {
-    res.status(400).send(error);
-  }
-});
-
-module.exports = router;
+module.exports = { obtener, crear };
