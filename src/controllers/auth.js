@@ -4,7 +4,6 @@ const uuid = require("short-uuid");
 const { TOKEN_SECRET } = require("../middlewares/jwt");
 
 const registro = async (req, res, next) => {
-  console.log("registro", req.body);
   try {
     if (req.body.email && req.body.name && req.body.password) {
       // Formato del mail
@@ -49,7 +48,6 @@ const registro = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  console.log(req.body);
   try {
     const user = usuarios.find((u) => u.email === req.body.email);
     if (!user) {

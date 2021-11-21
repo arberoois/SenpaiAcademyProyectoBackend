@@ -23,7 +23,6 @@ const crear = async (req, res, next) => {
         descripcion: req.body.descripcion,
         imagen: "images/random.png",
       };
-      console.log(profesor);
       profesores.push(profesor);
       res.status(201).send({ code: 201, profesor });
     } else {
