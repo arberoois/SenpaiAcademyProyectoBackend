@@ -7,7 +7,7 @@ const obtener = async (req, res, next) => {
     return next(error);
   }
 };
-const crear = async (req, res, next) => {
+const crear = async (req, res, next) => { 
   try {
     if (
       req.body.name &&

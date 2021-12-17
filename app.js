@@ -3,9 +3,10 @@ const cors = require("cors");
 const profesoresRouter = require("./src/routes/profesores");
 const authRouter = require("./src/routes/auth");
 const subRouter = require("./src/routes/subscripciones");
+require("dotenv").config();
 
 const app = express();
-const PORT = 3000;
+const PORT = procces.env.SVPORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
