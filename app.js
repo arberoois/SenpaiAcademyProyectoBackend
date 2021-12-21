@@ -6,7 +6,7 @@ const subRouter = require("./src/routes/subscripciones");
 require("dotenv").config();
 
 const app = express();
-const PORT = procces.env.SVPORT;
+const PORT = process.env.SVPORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

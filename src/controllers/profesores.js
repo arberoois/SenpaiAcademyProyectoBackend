@@ -1,13 +1,17 @@
-const uuid = require("short-uuid");
-
+const db = require("../db");
 const obtener = async (req, res, next) => {
   try {
-    res.status(200).send(profesores);
+    const profesores = await db.query("SELECT * FROM profesores");
+    if (profesores.rows.length > 0) {
+      res.status(200).send({ code: 200, profesores: profesores.rows });
+    } else {
+      res.status(200).send({ code: 200, message: "No hay profesores" });
+    }
   } catch (error) {
     return next(error);
   }
 };
-const crear = async (req, res, next) => { 
+const crear = async (req, res, next) => {
   try {
     if (
       req.body.name &&
@@ -16,15 +20,25 @@ const crear = async (req, res, next) => {
       req.body.descripcion
     ) {
       const profesor = {
-        id: uuid.generate(),
         nombre: req.body.name,
         rol: req.body.rol,
         sexo: req.body.sexo,
         descripcion: req.body.descripcion,
         imagen: "images/random.png",
       };
-      profesores.push(profesor);
-      res.status(201).send({ code: 201, profesor });
+      const result = await db.query(
+        "INSERT INTO profesores (nombre, rol, sexo, descripcion, imagen) VALUES ($1, $2, $3, $4, $5)",
+        [
+          profesor.nombre,
+          profesor.rol,
+          profesor.sexo,
+          profesor.descripcion,
+          profesor.imagen,
+        ]
+      );
+      if (result.rowCount > 0) {
+        res.status(201).send({ code: 201, message: "Profesor creado" });
+      }
     } else {
       return res.status(400).json({
         code: 400,
@@ -35,77 +49,5 @@ const crear = async (req, res, next) => {
     return next(error);
   }
 };
-
-let profesores = [
-  {
-    id: 1,
-    nombre: "Camila",
-    imagen: "images/CAMILA - BOXEO.JPG",
-    rol: "Boxeo",
-    sexo: "F",
-    descripcion: "Camila es profesora de Boxeo en Oxigenarte hace 6 meses.",
-  },
-  {
-    id: 2,
-    nombre: "Candelaria",
-    imagen: "images/CANDELARIA - PILATES.JPG",
-    rol: "Pilates",
-    sexo: "F",
-    descripcion:
-      "Candelaria es profesora de Pilates en Oxigenarte hace más de un año.",
-  },
-  {
-    id: 3,
-    nombre: "Carolina",
-    imagen: "images/CAROLINA - FITNESS.JPG",
-    rol: "Fitness",
-    sexo: "F",
-    descripcion:
-      "Carolina es profesora de Fitness en Oxigenarte hace 12 meses.",
-  },
-  {
-    id: 4,
-    nombre: "Diego",
-    imagen: "images/DIEGO - MUSCULACIÓN.JPG",
-    rol: "Musculación",
-    sexo: "M",
-    descripcion:
-      "Diego es profesor de Musculación en Oxigenarte hace más de dos años.",
-  },
-  {
-    id: 5,
-    nombre: "Elías",
-    imagen: "images/ELÍAS - MUSCULACIÓN.JPG",
-    rol: "Musculación",
-    sexo: "M",
-    descripcion: "Elías es profesor de Musculación en Oxigenarte hace 5 años.",
-  },
-  {
-    id: 6,
-    nombre: "Lorena",
-    imagen: "images/LORENA - FITNESS.JPG",
-    rol: "Fitness",
-    sexo: "F",
-    descripcion:
-      "Lorena es profesora de Fitness en Oxigenarte hace más de dos años.",
-  },
-  {
-    id: 7,
-    nombre: "Lucía",
-    imagen: "images/LUCÍA - PILATES.JPG",
-    rol: "Pilates",
-    sexo: "F",
-    descripcion:
-      "Lucía es profesora de Pilates en Oxigenarte hace más de dos años.",
-  },
-  {
-    id: 8,
-    nombre: "Mauro",
-    imagen: "images/MAURO - MUSCULACIÓN.JPG",
-    rol: "Musculación",
-    sexo: "M",
-    descripcion: "Mauro es profesor de Musculación en Oxigenarte hace un año.",
-  },
-];
 
 module.exports = { obtener, crear };
