@@ -26,4 +26,8 @@ npm run dev
 - express
 - jsonwebtoken
 - nodemon
-- short-uuid
+
+
+## Extras
+
+- Se encuentra el archivo query.sql el que tiene los CREATE & INSERT de las tablas.
